@@ -12,3 +12,24 @@ services:
       - ./app:/app
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
+    depends_on:
+      - db
+
+
+  db: 
+    image: timescale/timescaledb:latest-pg13
+    volumes: 
+      - dev-db-data:/var/lib/timescale/timescaledb/data
+    environment:
+        - TIMESCALE_DB=devdb
+        - TIMESCALE_USER=devuser
+        - TIMESCALE_PASSWORD=changeme
+
+
+volumes:
+  dev-db-data: 
